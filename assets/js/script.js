@@ -36,7 +36,7 @@ function passwordLengthIsValid(passwordLength) {
   }
 };
 
-//Shuffle whatever is in the finalPassword array
+//Shuffle the contents of the finalPassword array
 //Resource: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(finalPassword) {
   let currentIndex = finalPassword.length,
@@ -55,7 +55,7 @@ function shuffle(finalPassword) {
     ];
   }
   return finalPassword;
-}
+};
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
@@ -83,70 +83,33 @@ function writePassword() {
 
     //If password length meets our valication requirements ask the user the following questions
     if (passwordLengthIsValid(passwordLength)) {
-      wantLowerCase = window.confirm(
-        "Would you like your password to have LOWER CASE characters?"
-      );
-      wantUpperCase = window.confirm(
-        "Would you like your password to have UPPER CASE characters?"
-      );
-      wantNumbers = window.confirm(
-        "Would you like your password to have NUMBERS?"
-      );
-      wantSpecialCharacters = window.confirm(
-        "Would you like your password to have SPECIAL CHARACTERS"
-      );
+      wantLowerCase = window.confirm("Would you like your password to have LOWER CASE characters?");
+      wantUpperCase = window.confirm("Would you like your password to have UPPER CASE characters?");
+      wantNumbers = window.confirm("Would you like your password to have NUMBERS?");
+      wantSpecialCharacters = window.confirm("Would you like your password to have SPECIAL CHARACTERS");
 
       while (finalPassword.length < passwordLength) {
         if (wantLowerCase){
-          randomLowerCaseCharacter =
-            passwordCriteria.lowerCase[
-              Math.floor(Math.random() * passwordCriteria.lowerCase.length)
-            ];
-          console.log(randomLowerCaseCharacter);
+          randomLowerCaseCharacter = passwordCriteria.lowerCase[Math.floor(Math.random() * passwordCriteria.lowerCase.length)];
           finalPassword.push(randomLowerCaseCharacter);
-          console.log("finalPassword: " + finalPassword);
         }
 
-        if (wantUpperCase) {
-          randomUpperCaseCharacter =
-            passwordCriteria.upperCase[
-              Math.floor(Math.random() * passwordCriteria.upperCase.length)
-            ];
-          console.log(randomUpperCaseCharacter);
+        if (wantUpperCase){
+          randomUpperCaseCharacter = passwordCriteria.upperCase[Math.floor(Math.random() * passwordCriteria.upperCase.length)];
           finalPassword.push(randomUpperCaseCharacter);
-          console.log("finalPassword: " + finalPassword);
-     
         }
 
         if (wantNumbers) {
-          randomNumer =
-            passwordCriteria.number[
-              Math.floor(Math.random() * passwordCriteria.number.length)
-            ];
-          console.log(randomNumer);
+          randomNumer = passwordCriteria.number[Math.floor(Math.random() * passwordCriteria.number.length)];
           finalPassword.push(randomNumer);
-          console.log("finalPassword: " + finalPassword);
         }
 
         if (wantSpecialCharacters) {
-          randomSpecialCharacter =
-            passwordCriteria.specialCharacter[
-              Math.floor(
-                Math.random() * passwordCriteria.specialCharacter.length
-              )
-            ];
-          console.log(randomSpecialCharacter);
-        
+          randomSpecialCharacter = passwordCriteria.specialCharacter[Math.floor(Math.random() * passwordCriteria.specialCharacter.length)];
           finalPassword.push(randomSpecialCharacter);
-          console.log("finalPassword: " + finalPassword);
         }
-        if (
-          !wantLowerCase &&
-          !wantUpperCase &&
-          !wantNumbers &&
-          !wantSpecialCharacters
-        ) {
-        
+
+        if (!wantLowerCase && !wantUpperCase && !wantNumbers && !wantSpecialCharacters) {
           window.alert("Hmm, you did not select an option. Let's try again!");
           generatePassword(passwordLength);
         }
