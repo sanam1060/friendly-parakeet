@@ -36,6 +36,27 @@ function passwordLengthIsValid(passwordLength) {
   }
 };
 
+//Shuffle whatever is in the finalPassword array
+//Resource: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(finalPassword) {
+  let currentIndex = finalPassword.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [finalPassword[currentIndex], finalPassword[randomIndex]] = [
+      finalPassword[randomIndex],
+      finalPassword[currentIndex],
+    ];
+  }
+  return finalPassword;
+}
+
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
@@ -48,9 +69,11 @@ function writePassword() {
 
   //Generate password starts here
   function generatePassword() {
-    //User must enter data
+
+    //Initialize passwordLength and finalPassword
     var passwordLength = "";
     var finalPassword = [];
+
     //Force user to enter a valid number
     while (!passwordLengthIsValid(passwordLength)) {
       passwordLength = window.prompt(
@@ -58,52 +81,83 @@ function writePassword() {
       );
     }
 
-    //Ask the user if they want lower case characters in the password
+    //If password length meets our valication requirements ask the user the following questions
     if (passwordLengthIsValid(passwordLength)) {
-      wantLowerCase = window.confirm("Would you like your password to have LOWER CASE characters?");
-      
+      wantLowerCase = window.confirm(
+        "Would you like your password to have LOWER CASE characters?"
+      );
+      wantUpperCase = window.confirm(
+        "Would you like your password to have UPPER CASE characters?"
+      );
+      wantNumbers = window.confirm(
+        "Would you like your password to have NUMBERS?"
+      );
+      wantSpecialCharacters = window.confirm(
+        "Would you like your password to have SPECIAL CHARACTERS"
+      );
+
       while (finalPassword.length < passwordLength) {
-        if (wantLowerCase) {
-          randomLowerCaseCharacter = passwordCriteria.lowerCase[Math.floor(Math.random() * passwordCriteria.lowerCase.length)];
+        if (wantLowerCase){
+          randomLowerCaseCharacter =
+            passwordCriteria.lowerCase[
+              Math.floor(Math.random() * passwordCriteria.lowerCase.length)
+            ];
           console.log(randomLowerCaseCharacter);
           finalPassword.push(randomLowerCaseCharacter);
           console.log("finalPassword: " + finalPassword);
         }
-        
-        wantUpperCase = window.confirm("Would you like your password to have UPPER CASE characters?");
-        if (wantUpperCase){
-          randomUpperCaseCharacter = passwordCriteria.upperCase[Math.floor(Math.random() * passwordCriteria.upperCase.length)];
+
+        if (wantUpperCase) {
+          randomUpperCaseCharacter =
+            passwordCriteria.upperCase[
+              Math.floor(Math.random() * passwordCriteria.upperCase.length)
+            ];
           console.log(randomUpperCaseCharacter);
-          finalPassword.push(randomUpperCaseCharacter); 
+          finalPassword.push(randomUpperCaseCharacter);
           console.log("finalPassword: " + finalPassword);
+     
         }
 
-        wantNumbers = window.confirm("Would you like your password to have NUMBERS?");
-        if(wantNumbers){
-          randomNumer = passwordCriteria.number[Math.floor(Math.random() * passwordCriteria.number.length)];
+        if (wantNumbers) {
+          randomNumer =
+            passwordCriteria.number[
+              Math.floor(Math.random() * passwordCriteria.number.length)
+            ];
           console.log(randomNumer);
           finalPassword.push(randomNumer);
           console.log("finalPassword: " + finalPassword);
         }
 
-        wantSpecialCharacters = window.confirm("Would you like your password to have SPECIAL CHARACTERS");
-        if(wantSpecialCharacters){
-          randomSpecialCharacter = passwordCriteria.specialCharacter[Math.floor(Math.random() * passwordCriteria.specialCharacter.length)];
+        if (wantSpecialCharacters) {
+          randomSpecialCharacter =
+            passwordCriteria.specialCharacter[
+              Math.floor(
+                Math.random() * passwordCriteria.specialCharacter.length
+              )
+            ];
           console.log(randomSpecialCharacter);
+        
           finalPassword.push(randomSpecialCharacter);
           console.log("finalPassword: " + finalPassword);
         }
-
+        if (
+          !wantLowerCase &&
+          !wantUpperCase &&
+          !wantNumbers &&
+          !wantSpecialCharacters
+        ) {
+        
+          window.alert("Hmm, you did not select an option. Let's try again!");
+          generatePassword(passwordLength);
+        }
       }
-      
-      if (!wantLowerCase || !wantUpperCase || !wantNumbers || !wantSpecialCharacters){
-        console.log("user does not want anything");
-        window.alert("You need to choose at least one option. Try again!");
-      }
+      shuffle(finalPassword);
     }
+    //finalPassword without commas
+    return finalPassword.join("");
   }
   //--------The End--------
-  return finalPassword;
+  return generatePassword;
 }
 
 // Add event listener to generate button
