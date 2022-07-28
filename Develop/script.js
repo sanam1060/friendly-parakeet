@@ -14,7 +14,7 @@ passwordCriteria = {
   upperCase: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
     "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
 
-  Number: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  number: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 
   specialCharacter: ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "\'","\"", , ",",
   ".", "/", "\\", ":", ";", "<", ">", "?", "[", "]", "`", "{", "}", "|", "~"]
@@ -40,25 +40,6 @@ function passwordLengthIsValid(passwordLength) {
   }
 };
 
-//Check whether the user want any lower case characters in the password
-function wantLowerCase (){
-  if (wantLowerCase){
-    true;
-  } else {
-    false;
-  }
-};
-
-//Check whether the user want any upper case characters in the password
-function wantUpperCase (){
-  if (wantUpperCase){
-    true;
-  } else {
-    false;
-  }
-};
-
-
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
@@ -74,33 +55,58 @@ function writePassword() {
     //User must enter data
     var passwordLength = "";
     var finalPassword = [];
+    //Force user to enter a valid number
+    while (!passwordLengthIsValid(passwordLength)) {
+      passwordLength = window.prompt("How many characters would you like your password to have?\nYour password must have between 8-128 characters.\nPassword length must be a whole number with no decimals.");
+    }
     
-      //Force user to enter a valid number
-      while (!passwordLengthIsValid(passwordLength)) {
-        passwordLength = window.prompt(
-          "How many characters would you like your password to have?\nYour password must have between 8-128 characters.\nPassword length must be a whole number with no decimals."
-        );
-      }
-    
-      if (passwordLengthIsValid(passwordLength)){
-        //Ask the user if they want lower case characters in the password
-        if (wantLowerCase) {
-          console.log("user wants lower case");
-          var randomLowerCaseCharacter = passwordCriteria.lowerCase[Math.floor(Math.random() * passwordCriteria.lowerCase.length)];
-          console.log(randomLowerCaseCharacter);
-          //What is wrong with the code below? It returns a number
-          //I need help here
-          //console.log(finalPassword.push(randomLowerCaseCharacter));
-        } 
+    if (passwordLengthIsValid(passwordLength)){
+      //Ask the user if they want lower case characters in the password
+      wantLowerCase = window.confirm("Would you like your password to have LOWER CASE characters?");
+      if (wantLowerCase) {
+        randomLowerCaseCharacter = passwordCriteria.lowerCase[Math.floor(Math.random() * passwordCriteria.lowerCase.length)];
+        console.log(randomLowerCaseCharacter);
+        finalPassword = finalPassword + randomLowerCaseCharacter;
+        console.log("finalPassword: " + finalPassword);
       }
       
       
-      //--------The End--------
-      //return passwordLength in the password box
-      return finalPassword;
-      //passwordLength;
-    
+
+      wantUpperCase = window.confirm("Would you like your password to have UPPER CASE characters?");
+      if (wantUpperCase) {
+        randomUpperCaseCharacter = passwordCriteria.upperCase[Math.floor(Math.random() * passwordCriteria.upperCase.length)];
+        console.log(randomUpperCaseCharacter);
+        finalPassword = finalPassword + randomUpperCaseCharacter;
+        console.log("finalPassword: " + finalPassword);
+      }
+
+      wantNumbers = window.confirm("Would you like your password to have NUMBERS?")
+      if (wantNumbers){
+        randomNumer = passwordCriteria.number[Math.floor(Math.random() * passwordCriteria.number.length)];
+        console.log(randomNumer);
+        finalPassword = finalPassword + randomNumer;
+        console.log("finalPassword: " + finalPassword);
+      }
+
+      wantSpecialCharacters = window.confirm("Would you like your password to have SPECIAL CHARACTERS")
+      if (wantSpecialCharacters){
+        randomSpecialCharacter = passwordCriteria.specialCharacter[Math.floor(Math.random() * passwordCriteria.specialCharacter.length)];
+        console.log(randomSpecialCharacter);
+        finalPassword = finalPassword + randomSpecialCharacter;
+        console.log("finalPassword: " + finalPassword);
+      }
+
+      if (!wantLowerCase || !wantUpperCase || !wantNumbers || !wantSpecialCharacters){
+        console.log("user does not want anything");
+        window.alert("You need to choose at least one option. Try again!");
+      }
+    }
   }
-};
+  //--------The End--------
+  return finalPassword;
+}
+
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
+
+
